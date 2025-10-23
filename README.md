@@ -45,41 +45,25 @@ Inicialmente tentava enviar e-mail via SMTP, mas gerava erro de conexão (`ECONN
 **Correção aplicada:** substituímos o envio real por uma **simulação**, retornando uma mensagem de sucesso e registrando o envio com `print()`.
 
 ---
-
 ## 🐞 Erro encontrado e solução
 
-Durante a execução do fluxo, a etapa `EnviarConfirmacao` falhou com o seguinte erro:
+Durante a execução da função, a etapa `EnviarConfirmacao` falhou com o seguinte erro:
+(`ECONNREFUSED ::1:587`)
 
-```json
-"errorMessage": "Erro: Falha ao enviar e-mail: Error: connect ECONNREFUSED ::1:587"
 
-## 🔧 Diagnóstico:
-A função tentava enviar e-mail via SMTP local, o que não é permitido no ambiente da AWS Lambda.
+### 🔍 Diagnóstico
+O erro está relacionado ao envio de e-mail via SMTP local. O endereço `::1` representa o localhost, e a porta 587 é usada para envio de e-mails. Como o ambiente da AWS Lambda não possui um servidor SMTP local, a conexão foi recusada.
 
-## ✅ Solução aplicada:
-Removemos a tentativa de conexão SMTP
+### ✅ Solução aplicada
+- Removemos a tentativa de envio real via SMTP
+- Substituímos por uma **simulação de envio**, retornando uma mensagem de sucesso
+- A função passou a executar corretamente dentro do fluxo
 
-Simulamos o envio com uma mensagem de confirmação
+### 📘 Aprendizados
+- Como criar e testar funções Lambda em Python
+- Como lidar com erros de conexão SMTP em ambientes serverless
+- Como simular funcionalidades para manter o fluxo funcional
 
-Garantimos que o fluxo pudesse ser executado com sucesso
-
-## 📘 Aprendizados
-Como criar e conectar funções Lambda em Python
-
-Como montar um fluxo com AWS Step Functions usando JSON
-
-Como lidar com erros de integração e aplicar correções
-
-Como documentar um projeto técnico de forma clara e objetiva
-
-## 🔗 Referências
-Documentação AWS Step Functions
-
-Documentação AWS Lambda
-
-Desafio DIO - Orquestração com Step Functions
-
-## ✅ Status do projeto
-✔️ Fluxo funcional ✔️ Correção aplicada ✔️ Documentação concluída ✔️ Pronto para entrega na DIO 🚀
-
+### 🧾 Conclusão
+Documentar um projeto técnico de forma clara e objetiva é essencial para aprendizado contínuo e futuras implementações. Esta experiência reforçou a importância de entender os limites do ambiente e aplicar soluções criativas para manter a integridade do sistema.
 
